@@ -6,7 +6,10 @@
 
 @section('content')
 <div class="relative backdrop-blur-lg bg-gray-800/30 rounded-xl shadow-2xl border border-gray-700/50 p-8">
-    <h3 class="relative text-2xl font-bold text-gray-100 mb-8 font-montserrat">To-Do List Hari ini: <strong class="text-gray-200">{{ $hariIni }} WIB</strong></h3>
+    <div class="flex justify-between items-center mb-8">
+        <h3 class="relative text-2xl font-bold text-gray-100 font-montserrat">To-Do List Hari ini:</h3>
+        <div class="text-xl text-gray-200 font-montserrat" id="current-time"></div>
+    </div>
     
     <form action="{{ route('todolist.store') }}" method="POST" class="relative space-y-6">
         @csrf
@@ -89,7 +92,34 @@
 <style>
     body {
         font-family: 'Montserrat', sans-serif;
-        
+    }
+    
+    #current-time {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
     }
 </style>
+
+<script>
+    function updateTime() {
+        const timeElement = document.getElementById('current-time');
+        const now = new Date();
+        const options = {
+            timeZone: 'Asia/Jakarta',
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        };
+        timeElement.textContent = now.toLocaleTimeString('id-ID', options) + ' WIB';
+    }
+
+    // Update time immediately and then every second
+    updateTime();
+    setInterval(updateTime, 1000);
+</script>
 @endsection
